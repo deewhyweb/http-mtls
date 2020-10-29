@@ -5,11 +5,11 @@ https
   .createServer(
     {
       // ...
-    //   cert: fs.readFileSync('./certs/server/tls.crt'),
-    //   key: fs.readFileSync('./certs/server/tls.key'),
+      cert: fs.readFileSync('./certs/server/tls.crt'),
+      key: fs.readFileSync('./certs/server/tls.key'),
       requestCert: true,
-      rejectUnauthorized: false
-    //   ca: fs.readFileSync('./certs/ca/ca.crt')
+      rejectUnauthorized: false,
+      ca: fs.readFileSync('./certs/ca/ca.crt')
       // ...
     },
     (req, res) => {
