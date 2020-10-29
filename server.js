@@ -5,8 +5,8 @@ https
   .createServer(
     {
       // ...
-      cert: fs.readFileSync('./certs/server/server.crt'),
-      key: fs.readFileSync('./certs/server/server.key'),
+      cert: fs.readFileSync('./certs/server/tls.crt'),
+      key: fs.readFileSync('./certs/server/tls.key'),
       requestCert: true,
       rejectUnauthorized: false,
       ca: fs.readFileSync('./certs/ca/ca.crt')
