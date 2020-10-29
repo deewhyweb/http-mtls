@@ -55,7 +55,10 @@ spec:
         volumeMounts:
           # name must match the volume name below
           - name: test-certs
-            mountPath: /certs/server
+            mountPath: /opt/app-root/src/certs/server
+            readOnly: true
+          - name: test-ca
+            mountPath: /opt/app-root/src/certs/ca
             readOnly: true
       dnsPolicy: ClusterFirst
       restartPolicy: Always
@@ -66,3 +69,6 @@ spec:
       - name: test-certs
         secret:
           secretName: test-certs
+      - name: test-ca
+        secret:
+          secretName: test-ca

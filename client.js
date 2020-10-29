@@ -3,8 +3,8 @@ const https = require('https');
 let str = "";
 const req = https.request(
   {
-    hostname: 'localhost',
-    port: 9443,
+    hostname: 'tls-outside-mesh.apps.cluster-6bdf.6bdf.example.opentlc.com',
+    port: 443,
     path: '/',
     method: 'GET',
 
