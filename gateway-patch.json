@@ -1,0 +1,40 @@
+[{
+  "op": "add",
+  "path": "/spec/template/spec/containers/0/volumeMounts/0",
+  "value": {
+    "mountPath": "/etc/istio/test-certs",
+    "name": "test-certs",
+    "readOnly": true
+  }
+},
+{
+  "op": "add",
+  "path": "/spec/template/spec/volumes/0",
+  "value": {
+  "name": "test-certs",
+    "secret": {
+      "secretName": "test-certs",
+      "optional": true
+    }
+  }
+},
+{
+  "op": "add",
+  "path": "/spec/template/spec/containers/0/volumeMounts/1",
+  "value": {
+    "mountPath": "/etc/istio/test-ca",
+    "name": "test-ca",
+    "readOnly": true
+  }
+},
+{
+  "op": "add",
+  "path": "/spec/template/spec/volumes/1",
+  "value": {
+  "name": "test-ca",
+    "secret": {
+      "secretName": "test-ca",
+      "optional": true
+    }
+  }
+}]

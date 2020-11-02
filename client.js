@@ -3,7 +3,7 @@ const https = require('https');
 let str = "";
 const req = https.request(
   {
-    hostname: 'tls-outside-mesh.apps.cluster-6bdf.6bdf.example.opentlc.com',
+    hostname: 't-test.apps.cluster-fiserv-71cc.fiserv-71cc.example.opentlc.com',
     port: 443,
     path: '/',
     method: 'GET',

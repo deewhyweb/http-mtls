@@ -1,0 +1,56 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: Gateway
+metadata:
+  name: istio-egressgateway
+  namespace: dev-mesh
+spec:
+  selector:
+    istio: egressgateway
+  servers:
+  - port:
+      number: 443
+      name: https
+      protocol: HTTPS
+    hosts:
+    - t-test.apps.cluster-fiserv-71cc.fiserv-71cc.example.opentlc.com
+    tls:
+      mode: ISTIO_MUTUAL
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: DestinationRule
+metadata:
+  name: egressgateway-for-tls
+  namespace: dev-mesh
+spec:
+  host: istio-egressgateway.dev-mesh.svc.cluster.local
+  subsets:
+  - name: tls-outside-mesh
+    trafficPolicy:
+      loadBalancer:
+        simple: ROUND_ROBIN
+      portLevelSettings:
+      - port:
+          number: 443
+        tls:
+          mode: ISTIO_MUTUAL
+          sni: t-test.apps.cluster-fiserv-71cc.fiserv-71cc.example.opentlc.com
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: DestinationRule
+metadata:
+  name: egressgateway
+  namespace: dev-mesh
+spec:
+  host: t-test.apps.cluster-fiserv-71cc.fiserv-71cc.example.opentlc.com
+  trafficPolicy:
+    loadBalancer:
+      simple: ROUND_ROBIN
+    portLevelSettings:
+    - port:
+        number: 443
+      tls:
+        mode: MUTUAL
+        clientCertificate: /etc/istio/test-certs/tls.crt
+        privateKey: /etc/istio/test-certs/tls.key
+        caCertificates: /etc/istio/test-ca/ca.crt
+        sni: t-test.apps.cluster-fiserv-71cc.fiserv-71cc.example.opentlc.com

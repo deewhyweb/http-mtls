@@ -1,0 +1,40 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: tls-through-egress-gateway
+  namespace: dev-mesh
+spec:
+  hosts:
+  - t-test.apps.cluster-fiserv-71cc.fiserv-71cc.example.opentlc.com
+  gateways:
+  - mesh
+  - istio-egressgateway
+  http:
+  - match:
+    - gateways:
+      - mesh
+      port: 80
+      sourceLabels: 
+        app: sleep
+      sourceNamespace: dev-project
+      sniHosts:
+      - t-test.apps.cluster-fiserv-71cc.fiserv-71cc.example.opentlc.com
+    route:
+    - destination:
+        host: istio-egressgateway.dev-mesh.svc.cluster.local
+        subset: tls-outside-mesh
+        port:
+          number: 443
+  - match:
+    - gateways:
+      - istio-egressgateway
+      port: 443
+      sniHosts:
+      - t-test.apps.cluster-fiserv-71cc.fiserv-71cc.example.opentlc.com
+    route:
+    - destination:
+        host: t-test.apps.cluster-fiserv-71cc.fiserv-71cc.example.opentlc.com
+        port:
+          number: 443
+      weight: 100
+  
