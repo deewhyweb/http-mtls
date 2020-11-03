@@ -38,7 +38,7 @@ Install the service mesh operator
 
 Deploy the service mesh operator
 
-`oc apply -f service-mesh.yaml`
+`oc apply -f service-mesh.yml`
 
 Deploy the workloads
 
