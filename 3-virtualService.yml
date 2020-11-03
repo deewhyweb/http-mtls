@@ -5,6 +5,7 @@ metadata:
   namespace: istio-system
 spec:
   hosts:
+  - t-test.apps.cluster-fiserv-71cc.fiserv-71cc.example.opentlc.com
   - dev-t-test.apps.cluster-fiserv-71cc.fiserv-71cc.example.opentlc.com
   - qa-t-test.apps.cluster-fiserv-71cc.fiserv-71cc.example.opentlc.com
   gateways:
@@ -19,7 +20,7 @@ spec:
         app: sleep
       sourceNamespace: fs-mesh-dev
       sniHosts:
-      - dev-t-test.apps.cluster-fiserv-71cc.fiserv-71cc.example.opentlc.com
+      - t-test.apps.cluster-fiserv-71cc.fiserv-71cc.example.opentlc.com
     route:
     - destination:
         host: istio-egressgateway.istio-system.svc.cluster.local

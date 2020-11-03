@@ -10,7 +10,7 @@ const req = https.request(
 
     cert: fs.readFileSync('./certs/client/client.crt'),
     key: fs.readFileSync('./certs/client/client.key'),
-    ca: fs.readFileSync('./certs/ca/ca.crt')
+     ca: fs.readFileSync('./certs/ca/ca.crt')
   },
   response => {
     response.on('data', function (chunk) {

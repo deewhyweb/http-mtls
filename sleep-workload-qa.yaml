@@ -1,0 +1,48 @@
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: sleep-qa
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: sleep-qa
+  labels:
+    app: sleep-qa
+spec:
+  ports:
+  - port: 80
+    name: http
+  selector:
+    app: sleep-qa
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sleep-qa
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: sleep-qa
+  template:
+    metadata:
+      labels:
+        app: sleep-qa
+      annotations:
+        sidecar.istio.io/inject: 'true'
+    spec:
+      serviceAccountName: sleep-qa
+      containers:
+      - name: sleep-qa
+        image: governmentpaas/curl-ssl
+        command: ["/bin/sleep", "3650d"]
+        imagePullPolicy: IfNotPresent
+        volumeMounts:
+        - mountPath: /etc/sleep/tls
+          name: secret-volume
+      volumes:
+      - name: secret-volume
+        secret:
+          secretName: sleep-secret
+          optional: true

@@ -1,0 +1,16 @@
+apiVersion: project.openshift.io/v1
+kind: Project
+metadata:
+  name: fs-mesh-dev
+
+---
+apiVersion: project.openshift.io/v1
+kind: Project
+metadata:
+  name: fs-mesh-qa
+
+---
+apiVersion: project.openshift.io/v1
+kind: Project
+metadata:
+  name: istio-system
