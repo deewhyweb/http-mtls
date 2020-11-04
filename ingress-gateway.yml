@@ -9,7 +9,7 @@ spec:
   servers:
   - port:
      number: 443
-     name: https-443
+     name: https
      protocol: HTTPS
     tls:
       mode: PASSTHROUGH
@@ -26,14 +26,30 @@ spec:
   - nodejs-fs-mesh-qa.apps.cluster-6bdf.6bdf.example.opentlc.com
   gateways:
   - gateway1
-  http:
-  - route:
+  tls:
+  - match:
+    - gateways:
+      - gateway1
+      port: 443
+      sniHosts:
+      - nodejs-fs-mesh-qa.apps.cluster-6bdf.6bdf.example.opentlc.com
+    route:
     - destination:
         host: http-mtls-git.fs-mesh-qa.svc.cluster.local
 --- 
-# apiVersion: networking.istio.io/v1alpha3
-# kind: DestinationRule
-# metadata:
-#   name: nodejs
-# spec:
-#   host: nodejs.fs-mesh-qa.svc.cluster.local
+apiVersion: networking.istio.io/v1alpha3
+kind: DestinationRule
+metadata:
+  name: nodejs
+  namespace: istio-system
+spec:
+  host: http-mtls-git.fs-mesh-qa.svc.cluster.local
+  trafficPolicy:
+    loadBalancer:
+      simple: ROUND_ROBIN
+    portLevelSettings:
+    - port:
+        number: 8443
+      tls:
+        mode: DISABLE
+        sni: http-mtls-git.fs-mesh-qa.svc.cluster.local

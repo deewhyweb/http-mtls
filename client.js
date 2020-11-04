@@ -10,7 +10,8 @@ const req = https.request(
     servername: 'nodejs-fs-mesh-qa.apps.cluster-6bdf.6bdf.example.opentlc.com',
     cert: fs.readFileSync('./ingress/certs/client/client.crt'),
     key: fs.readFileSync('./ingress/certs/client/client.key'),
-    rejectUnauthorized: false
+    ca: fs.readFileSync('./ingress/certs/ca/ca.crt'),
+    rejectUnauthorized: true
   },
   response => {
     response.on('data', function (chunk) {
