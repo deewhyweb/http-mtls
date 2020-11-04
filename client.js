@@ -3,14 +3,14 @@ const https = require('https');
 let str = "";
 const req = https.request(
   {
-    hostname: 't-test.apps.cluster-fiserv-71cc.fiserv-71cc.example.opentlc.com',
+    hostname: 'nodejs-fs-mesh-qa.apps.cluster-6bdf.6bdf.example.opentlc.com',
     port: 443,
     path: '/',
     method: 'GET',
-
-    cert: fs.readFileSync('./certs/client/client.crt'),
-    key: fs.readFileSync('./certs/client/client.key'),
-     ca: fs.readFileSync('./certs/ca/ca.crt')
+    servername: 'nodejs-fs-mesh-qa.apps.cluster-6bdf.6bdf.example.opentlc.com',
+    cert: fs.readFileSync('./ingress/certs/client/client.crt'),
+    key: fs.readFileSync('./ingress/certs/client/client.key'),
+    rejectUnauthorized: false
   },
   response => {
     response.on('data', function (chunk) {
