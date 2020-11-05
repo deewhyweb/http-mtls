@@ -32,6 +32,8 @@ spec:
     type: RollingUpdate
   template:
     metadata:
+      annotations:
+        sidecar.istio.io/inject: 'true'
       labels:
         app: http-mtls-git
         deploymentconfig: http-mtls-git

@@ -13,9 +13,7 @@ spec:
      protocol: HTTPS
     tls:
       mode: SIMPLE
-      serverCertificate: /etc/istio/test-certs/tls.crt
-      privateKey: /etc/istio/test-certs/tls.key
-      caCertificates: /etc/istio/test-ca/ca.crt
+      credentialName: test-certs
       sni: http-mtls.apps.cluster-6c24.6c24.example.opentlc.com
     hosts:
     - http-mtls.apps.cluster-6c24.6c24.example.opentlc.com

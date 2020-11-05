@@ -51,9 +51,7 @@ spec:
         number: 443
       tls:
         mode: MUTUAL
-        clientCertificate: /etc/istio/test-certs/tls.crt
-        privateKey: /etc/istio/test-certs/tls.key
-        caCertificates: /etc/istio/test-ca/ca.crt
+        credentialName: test-certs
         sni: t-test.apps.cluster-fiserv-71cc.fiserv-71cc.example.opentlc.com
 # ---
 # apiVersion: networking.istio.io/v1alpha3

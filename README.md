@@ -16,15 +16,11 @@ oc create secret tls test-certs \
      -n fs-mesh-qa
 ```
 ```
-     oc create secret generic test-ca \
+     oc create secret generic test-certs-cacert \
      --from-file=./certs/ca/ca.crt \
      -n fs-mesh-qa
 ```
-Check gateway-patch.json to ensure correct secret names.  
 
-Patch the istio-egressgateway with:
-
-`oc -n istio-system patch --type=json deploy istio-egressgateway -p "$(cat gateway-patch.json)"`
 
 ## Setup
 
@@ -74,17 +70,6 @@ Test connections
 
 ## Ingress
 
-Deploy sample http app
-```
-oc project fs-mesh-qa
-
-oc apply -f ./deploy-app/is.yml
-oc apply -f ./deploy-app/svc.yml
-oc apply -f ./deploy-app/bc.yml
-oc apply -f ./deploy-app/deployment.yml
-
-oc start-build http-mtls-git
-```
 
 Determine hostname
 
@@ -119,6 +104,19 @@ Update ingress-gateway with correct hostname
 
 Update client.js with correct hostname
 
+Deploy sample http app
+```
+oc project fs-mesh-qa
+
+oc apply -f ./deploy-app/is.yml
+oc apply -f ./deploy-app/svc.yml
+oc apply -f ./deploy-app/bc.yml
+oc apply -f ./deploy-app/deployment.yml
+
+oc start-build http-mtls-git
+```
+
+
 run `node client.js`
 
 Expected output 
@@ -151,14 +149,12 @@ oc create secret tls test-certs \
      -n istio-system
 ```
 ```
-     oc create secret generic test-ca \
+     oc create secret generic test-certs-cacert \
      --from-file=./ingress/certs/ca/ca.crt \
      -n istio-system
 ```
 
-Patch the ingress-gateway
 
-`oc -n istio-system patch --type=json deploy istio-ingressgateway -p "$(cat gateway-patch.json)"`
 
 Apply the ingress-gateway-edge.yml
 
@@ -177,3 +173,8 @@ Expected output
 ```
 Hello World!
 ```
+
+
+oc create secret generic test-certs-cacert \
+     --from-file=./ingress/certs/ca/ca.crt \
+     -n istio-system
