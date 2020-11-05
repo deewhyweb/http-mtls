@@ -1,0 +1,68 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    alpha.image.policy.openshift.io/resolve-names: '*'
+    app.openshift.io/vcs-ref: master
+    app.openshift.io/vcs-uri: https://github.com/deewhyweb/http-mtls.git
+    deployment.kubernetes.io/revision: "2"
+    image.openshift.io/triggers: '[{"from":{"kind":"ImageStreamTag","name":"http-mtls-git:latest","namespace":"fs-mesh-qa"},"fieldPath":"spec.template.spec.containers[?(@.name==\"http-mtls-git\")].image","pause":"false"}]'
+  generation: 2
+  labels:
+    app: http-mtls-git
+    app.kubernetes.io/component: http-mtls-git
+    app.kubernetes.io/instance: http-mtls-git
+    app.kubernetes.io/name: nodejs
+    app.kubernetes.io/part-of: http-mtls-git-app
+    app.openshift.io/runtime: nodejs
+    app.openshift.io/runtime-version: "12"
+  name: http-mtls-git
+  namespace: fs-mesh-qa
+spec:
+  progressDeadlineSeconds: 600
+  replicas: 1
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+      app: http-mtls-git
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: http-mtls-git
+        deploymentconfig: http-mtls-git
+    spec:
+      containers:
+      - image: image-registry.openshift-image-registry.svc:5000/fs-mesh-qa/http-mtls-git@sha256:f87daeb41666b8ba4bdc9d420d3452cdacc84c7dcb70667e41857f3c8a637fb3
+        imagePullPolicy: Always
+        name: http-mtls-git
+        ports:
+        - containerPort: 8080
+          protocol: TCP
+        resources: {}
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
+        volumeMounts:
+          # name must match the volume name below
+          - name: test-certs
+            mountPath: /opt/app-root/src/certs/server
+            readOnly: true
+          - name: test-ca
+            mountPath: /opt/app-root/src/certs/ca
+            readOnly: true
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      securityContext: {}
+      terminationGracePeriodSeconds: 30
+      volumes:
+      - name: test-certs
+        secret:
+          secretName: test-certs
+      - name: test-ca
+        secret:
+          secretName: test-ca

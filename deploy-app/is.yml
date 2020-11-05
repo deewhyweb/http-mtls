@@ -1,0 +1,23 @@
+apiVersion: image.openshift.io/v1
+kind: ImageStream
+metadata:
+  annotations:
+    app.openshift.io/vcs-ref: master
+    app.openshift.io/vcs-uri: https://github.com/deewhyweb/http-mtls.git
+  generation: 1
+  labels:
+    app: http-mtls-git
+    app.kubernetes.io/component: http-mtls-git
+    app.kubernetes.io/instance: http-mtls-git
+    app.kubernetes.io/name: nodejs
+    app.kubernetes.io/part-of: http-mtls-git-app
+    app.openshift.io/runtime: nodejs
+    app.openshift.io/runtime-version: "12"
+  name: http-mtls-git
+  namespace: fs-mesh-qa
+  resourceVersion: "46092"
+  selfLink: /apis/image.openshift.io/v1/namespaces/fs-mesh-qa/imagestreams/http-mtls-git
+  uid: c0ff2c83-65a6-4964-a5cf-5428919ad79d
+spec:
+  lookupPolicy:
+    local: false

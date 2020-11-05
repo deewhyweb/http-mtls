@@ -14,7 +14,7 @@ spec:
     tls:
       mode: PASSTHROUGH
     hosts:
-    - nodejs-fs-mesh-qa.apps.cluster-6bdf.6bdf.example.opentlc.com
+    - http-mtls.apps.cluster-6c24.6c24.example.opentlc.com
 --- 
 apiVersion: networking.istio.io/v1alpha3
 kind: VirtualService
@@ -23,7 +23,7 @@ metadata:
   namespace: istio-system
 spec:
   hosts:
-  - nodejs-fs-mesh-qa.apps.cluster-6bdf.6bdf.example.opentlc.com
+  - http-mtls.apps.cluster-6c24.6c24.example.opentlc.com
   gateways:
   - gateway1
   tls:
@@ -32,7 +32,7 @@ spec:
       - gateway1
       port: 443
       sniHosts:
-      - nodejs-fs-mesh-qa.apps.cluster-6bdf.6bdf.example.opentlc.com
+      - http-mtls.apps.cluster-6c24.6c24.example.opentlc.com
     route:
     - destination:
         host: http-mtls-git.fs-mesh-qa.svc.cluster.local

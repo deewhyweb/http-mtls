@@ -1,0 +1,53 @@
+apiVersion: build.openshift.io/v1
+kind: BuildConfig
+metadata:
+  annotations:
+    app.openshift.io/vcs-ref: master
+    app.openshift.io/vcs-uri: https://github.com/deewhyweb/http-mtls.git
+  labels:
+    app: http-mtls-git
+    app.kubernetes.io/component: http-mtls-git
+    app.kubernetes.io/instance: http-mtls-git
+    app.kubernetes.io/name: nodejs
+    app.kubernetes.io/part-of: http-mtls-git-app
+    app.openshift.io/runtime: nodejs
+    app.openshift.io/runtime-version: "12"
+  name: http-mtls-git
+  namespace: fs-mesh-qa
+spec:
+  failedBuildsHistoryLimit: 5
+  output:
+    to:
+      kind: ImageStreamTag
+      name: http-mtls-git:latest
+  postCommit: {}
+  resources: {}
+  runPolicy: Serial
+  source:
+    contextDir: /
+    git:
+      uri: https://github.com/deewhyweb/http-mtls.git
+    type: Git
+  strategy:
+    sourceStrategy:
+      from:
+        kind: ImageStreamTag
+        name: nodejs:12
+        namespace: openshift
+    type: Source
+  successfulBuildsHistoryLimit: 5
+  triggers:
+  - generic:
+      secretReference:
+        name: http-mtls-git-generic-webhook-secret
+    type: Generic
+  - github:
+      secretReference:
+        name: http-mtls-git-github-webhook-secret
+    type: GitHub
+  - imageChange:
+      lastTriggeredImageID: image-registry.openshift-image-registry.svc:5000/openshift/nodejs@sha256:87be8d1bf03ef6cf2d050ff86ea1798a6a40f0bf238d1d8b7eadb5f45530de36
+    type: ImageChange
+  - type: ConfigChange
+status:
+  lastVersion: 1
