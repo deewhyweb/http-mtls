@@ -1,0 +1,59 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: Gateway
+metadata:
+  name: gateway1
+  namespace: istio-system
+spec:
+  selector:
+    istio: ingressgateway
+  servers:
+  - port:
+     number: 443
+     name: https
+     protocol: HTTPS
+    tls:
+      mode: SIMPLE
+      serverCertificate: /etc/istio/test-certs/tls.crt
+      privateKey: /etc/istio/test-certs/tls.key
+      caCertificates: /etc/istio/test-ca/ca.crt
+      sni: http-mtls.apps.cluster-6c24.6c24.example.opentlc.com
+    hosts:
+    - http-mtls.apps.cluster-6c24.6c24.example.opentlc.com
+--- 
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: web-routing-config
+  namespace: istio-system
+spec:
+  hosts:
+  - http-mtls.apps.cluster-6c24.6c24.example.opentlc.com
+  gateways:
+  - gateway1
+  tls:
+  - match:
+    - gateways:
+      - gateway1
+      port: 443
+      sniHosts:
+      - http-mtls.apps.cluster-6c24.6c24.example.opentlc.com
+    route:
+    - destination:
+        host: http-mtls-git.fs-mesh-qa.svc.cluster.local
+--- 
+apiVersion: networking.istio.io/v1alpha3
+kind: DestinationRule
+metadata:
+  name: nodejs
+  namespace: istio-system
+spec:
+  host: http-mtls-git.fs-mesh-qa.svc.cluster.local
+  trafficPolicy:
+    loadBalancer:
+      simple: ROUND_ROBIN
+    portLevelSettings:
+    - port:
+        number: 8080
+      tls:
+        mode: DISABLE
+        sni: http-mtls-git.fs-mesh-qa.svc.cluster.local

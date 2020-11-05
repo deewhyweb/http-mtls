@@ -31,6 +31,7 @@ if (httpsServer === true) {
 } else {
   console.log("Starting http server, not requiring certs");
 http.createServer(function (req, res) {
+  console.log('Received request');
   res.write('Hello World!'); //write a response to the client
   res.end(); //end the response
 }).listen(8080); //the server object listens on port 8080

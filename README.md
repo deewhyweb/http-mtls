@@ -126,3 +126,36 @@ Expected output
 ```
 Hello, world!
 ```
+
+## Test tls terminated on ingress
+
+Update deployment to add env variable to switch to http app
+
+oc set env deployment/http-mtls-git --overwrite enablehttp=true
+
+Check the logs of the pod, you should see:
+
+```
+
+Starting http server, not requiring certs
+
+```
+
+Move the certs to the ingress gateway
+
+
+```
+oc create secret tls test-certs \
+     --cert=./ingress/certs/server/combined.pem \
+     --key=./ingress/certs/server/server.key \
+     -n istio-system
+```
+```
+     oc create secret generic test-ca \
+     --from-file=./ingress/certs/ca/ca.crt \
+     -n istio-system
+```
+
+Patch the ingress-gateway
+
+`oc -n istio-system patch --type=json deploy istio-ingressgateway -p "$(cat gateway-patch.json)"`

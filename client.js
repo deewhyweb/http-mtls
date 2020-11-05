@@ -19,6 +19,7 @@ const req = https.request(
       });
     
       response.on('end', function () {
+        console.log('Outputting')
         console.log(str);
       });
   }
