@@ -159,3 +159,21 @@ oc create secret tls test-certs \
 Patch the ingress-gateway
 
 `oc -n istio-system patch --type=json deploy istio-ingressgateway -p "$(cat gateway-patch.json)"`
+
+Apply the ingress-gateway-edge.yml
+
+`oc apply -f ingress-gateway-edge.yml`
+
+Update the service to use port 8080
+
+`oc apply -f ./deploy-app/svc-8080.yml`
+
+Test with client
+
+`node client.js`
+
+Expected output 
+
+```
+Hello World!
+```
