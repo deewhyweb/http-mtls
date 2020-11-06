@@ -144,7 +144,7 @@ Move the certs to the ingress gateway
 
 ```
 oc create secret tls test-certs \
-     --cert=./ingress/certs/server/combined.pem \
+     --cert=./ingress/certs/server/server.crt \
      --key=./ingress/certs/server/server.key \
      -n istio-system
 ```
@@ -173,8 +173,3 @@ Expected output
 ```
 Hello World!
 ```
-
-
-oc create secret generic test-certs-cacert \
-     --from-file=./ingress/certs/ca/ca.crt \
-     -n istio-system

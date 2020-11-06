@@ -12,7 +12,7 @@ spec:
      name: https
      protocol: HTTPS
     tls:
-      mode: SIMPLE
+      mode: MUTUAL
       credentialName: test-certs
       sni: http-mtls.apps.cluster-6c24.6c24.example.opentlc.com
     hosts:
